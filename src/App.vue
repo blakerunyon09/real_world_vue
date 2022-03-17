@@ -1,10 +1,23 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div id="app">
+    <div id="flashMessage" v-if="GlobalStore.flashMessage">
+      {{ GlobalStore.flashMessage }}
+    </div>
+    <div id="nav">
+      <router-link :to="{ name: 'UsersList' }" >Users</router-link> |
+      <router-link :to="{ name: 'About' }" >About</router-link>
+    </div>
+    <router-view/>
   </div>
-  <router-view/>
 </template>
+
+<script>
+
+export default {
+  inject: ['GlobalStore'],
+};
+
+</script>
 
 <style>
 #app {
@@ -13,6 +26,20 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+@keyframes yellowfade {
+  from {
+    background: yellow;
+  }
+  to {
+    background: transparent;
+  }
+}
+
+#flashMessage {
+  animation-name: yellowfade;
+  animation-duration: 3s;
 }
 
 #nav {
