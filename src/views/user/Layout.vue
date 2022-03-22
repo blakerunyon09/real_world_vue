@@ -21,13 +21,21 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   computed: {
     ...mapState({
       user: (state) => state.user,
     }),
+  },
+  methods: {
+    ...mapActions([
+      'clearUser',
+    ]),
+  },
+  beforeUnmount() {
+    this.clearUser();
   },
 };
 

@@ -53,9 +53,6 @@ export default {
       return this.checkNextPage(this.page);
     },
   },
-  beforeMount() {
-    this.$store.dispatch('setAllUsers');
-  },
   create() {
     NProgress.start();
     setTimeout(() => {

@@ -12,12 +12,24 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   computed: mapState({
     flashMessage: (state) => state.flashMessage,
   }),
+  methods: {
+    ...mapActions([
+      'setAllUsers',
+      'clearAllUsers',
+    ]),
+  },
+  beforeMount() {
+    this.setAllUsers();
+  },
+  beforeUnmount() {
+    this.clearAllUsers();
+  },
 };
 
 </script>
