@@ -1,5 +1,9 @@
 <template>
-  <router-link class="user-link" :to="{ name: 'Details', params: { id: user.id }}">
+  <router-link
+    class="user-link"
+    :to="{ name: 'Details', params: { id: user.id }}"
+    @click="setUser(user.id)"
+  >
     <div class="user-card">
       <span class="user-card-text">{{user.name}}</span>
       <h4>{{user.email}}</h4>
@@ -8,10 +12,17 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'UserCard',
   props: {
     user: Object,
+  },
+  methods: {
+    ...mapActions([
+      'setUser',
+    ]),
   },
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <div id="flashMessage" v-if="GlobalStore.flashMessage">
-      {{ GlobalStore.flashMessage }}
+    <div id="flashMessage" v-if="flashMessage">
+      {{ flashMessage }}
     </div>
     <div id="nav">
       <router-link :to="{ name: 'UsersList' }" >Users</router-link> |
@@ -12,9 +12,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 
 export default {
-  inject: ['GlobalStore'],
+  computed: mapState({
+    flashMessage: (state) => state.flashMessage,
+  }),
 };
 
 </script>

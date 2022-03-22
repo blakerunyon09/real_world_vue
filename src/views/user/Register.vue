@@ -6,11 +6,15 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 
 export default {
   props: ['user'],
-  inject: ['GlobalStore'],
   methods: {
+    ...mapActions([
+      'setFlashMessage',
+      'clearFlashMessage',
+    ]),
     register() {
       const APIPromise = new Promise((res, rej) => {
         try {
@@ -24,10 +28,10 @@ export default {
 
       APIPromise
         .then(() => {
-          this.GlobalStore.flashMessage = `You have successfully followed ${this.user.name}`;
+          this.setFlashMessage(`You have successfully followed ${this.user.name}`);
 
           setTimeout(() => {
-            this.GlobalStore.flashMessage = '';
+            this.clearFlashMessage();
           }, 3000);
 
           this.$router.push({

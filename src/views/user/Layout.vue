@@ -21,13 +21,13 @@
 </template>
 
 <script>
-import GlobalStore from '../../store/index';
+import { mapState } from 'vuex';
 
 export default {
-  data() {
-    return {
-      user: GlobalStore.user,
-    };
+  computed: {
+    ...mapState({
+      user: (state) => state.user,
+    }),
   },
 };
 

@@ -10,8 +10,8 @@ const apiClient = axios.create({
 });
 
 export default {
-  getUsers(perPage, page) {
-    return apiClient.get(`/users/?_limit=${perPage}&_page=${page}`);
+  getUsers() {
+    return apiClient.get('/users');
   },
   getUser(id) {
     return apiClient.get(`/users/${id}`);

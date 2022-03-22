@@ -1,0 +1,6 @@
+export const SET_FLASH_MESSAGE = 'SET_FLASH_MESSAGE';
+export const CLEAR_FLASH_MESSAGE = 'CLEAR_FLASH_MESSAGE';
+export const SET_USER = 'SET_USER';
+export const CLEAR_USER = 'CLEAR_USER';
+export const SET_ALL_USERS = 'SET_ALL_USERS';
+export const CLEAR_ALL_USERS = 'CLEAR_ALL_USERS';

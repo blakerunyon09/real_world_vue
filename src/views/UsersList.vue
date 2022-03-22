@@ -1,7 +1,10 @@
 <template>
-  <div class="users">
+  <div
+    class="users"
+    v-if="users"
+  >
     <UserCard
-      v-for="user in users"
+      v-for="user in usersOnPage"
       :user="user"
       :key="user.id"
     />
@@ -25,11 +28,9 @@
 </template>
 
 <script>
-/* eslint-disable no-param-reassign */
 import UserCard from '@/components/UserCard.vue';
-import JsonApiService from '@/services/JsonApiService';
 import NProgress from 'nprogress';
-import { watchEffect } from 'vue';
+import { mapState, mapGetters } from 'vuex';
 
 export default {
   name: 'UsersList',
@@ -38,56 +39,28 @@ export default {
   },
   props: ['page'],
   computed: {
-    hasNextPage() {
-      const totalPages = Math.ceil(this.totalUsers / 2);
-
-      return this.page < totalPages;
+    ...mapState({
+      users: (state) => state.users,
+    }),
+    ...mapGetters([
+      'getUsersByPage',
+      'checkNextPage',
+    ]),
+    usersOnPage() {
+      return this.getUsersByPage(this.page);
     },
+    hasNextPage() {
+      return this.checkNextPage(this.page);
+    },
+  },
+  beforeMount() {
+    this.$store.dispatch('setAllUsers');
   },
   create() {
     NProgress.start();
     setTimeout(() => {
       NProgress.end();
     }, 1000);
-  },
-  // WITHOUT GLOBAL LOADING BAR
-  // beforeRouteEnter(routeTo, routeFrom, next) {
-  //   NProgress.start();
-  //   return JsonApiService.getUsers(2, parseInt(routeTo.query.page, 10) || 1)
-  //     .then((response) => {
-  //       next((comp) => {
-  //         comp.users = response.data;
-  //         comp.totalUsers = response.headers['x-total-count'];
-  //       });
-  //     })
-  //     .catch((err) => console.log(err))
-  //     .finally(() => NProgress.done());
-  // },
-  // beforeRouteUpdate(routeTo) {
-  //   NProgress.start();
-  //   JsonApiService.getUsers(2, parseInt(routeTo.query.page, 10) || 1)
-  //     .then((response) => {
-  //       this.users = response.data;
-  //       this.totalUsers = response.headers['x-total-count'];
-  //     })
-  //     .catch((err) => console.log(err))
-  //     .finally(() => NProgress.done());
-  // },
-  // WITH GLOBAL LOADING BAR
-  created() {
-    this.users = null;
-    watchEffect(() => JsonApiService.getUsers(2, this.page)
-      .then((response) => {
-        this.users = response.data;
-        this.totalUsers = response.headers['x-total-count'];
-      })
-      .catch((err) => console.log(err)));
-  },
-  data() {
-    return {
-      users: null,
-      totalUsers: null,
-    };
   },
 };
 </script>
@@ -100,3 +73,29 @@ export default {
     gap: 10px;
   }
 </style>
+
+// beforeRoute Examples
+
+// beforeRouteEnter(routeTo, routeFrom, next) {
+//   NProgress.start();
+//   return JsonApiService.getUsers(2, parseInt(routeTo.query.page, 10) || 1)
+//     .then((response) => {
+//       next((comp) => {
+//         comp.users = response.data;
+//         comp.totalUsers = response.headers['x-total-count'];
+//       });
+//     })
+//     .catch((err) => console.log(err))
+//     .finally(() => NProgress.done());
+// },
+
+// beforeRouteUpdate(routeTo) {
+//   NProgress.start();
+//   JsonApiService.getUsers(2, parseInt(routeTo.query.page, 10) || 1)
+//     .then((response) => {
+//       this.users = response.data;
+//       this.totalUsers = response.headers['x-total-count'];
+//     })
+//     .catch((err) => console.log(err))
+//     .finally(() => NProgress.done());
+// }
