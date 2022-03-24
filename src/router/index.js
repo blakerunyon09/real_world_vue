@@ -1,14 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import nprogress from 'nprogress';
-import GlobalStore from '../store/index';
 import UsersList from '../views/UsersList.vue';
 import About from '../views/About.vue';
+import RegisterUser from '../views/RegisterUser.vue';
 import Layout from '../views/user/Layout.vue';
 import Details from '../views/user/Details.vue';
 import Register from '../views/user/Register.vue';
 import Edit from '../views/user/Edit.vue';
 import NotFound from '../views/NotFound.vue';
-import JsonAPiService from '../services/JsonApiService';
+import store from '../store/index';
 
 const routes = [
   {
@@ -23,14 +23,16 @@ const routes = [
     component: About,
   },
   {
+    path: '/register',
+    name: 'RegisterUser',
+    component: RegisterUser,
+  },
+  {
     path: '/user/:id',
     name: 'Layout',
     props: true,
     component: Layout,
-    beforeEnter: (to) => JsonAPiService.getUser(to.params.id)
-      .then(({ data }) => {
-        GlobalStore.user = data;
-      })
+    beforeEnter: (to) => store.dispatch('setUser', to.params.id)
       .catch(() => ({
         name: '404Resource',
         params: { resource: 'user' },

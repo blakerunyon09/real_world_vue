@@ -8,29 +8,29 @@
       :user="user"
       :key="user.id"
     />
-  </div>
-  <div>
-    <router-link
-      :to="{ name: 'UsersList', query: { page: page - 1 } }"
-      rel="prev"
-      v-if="page != 1"
-    >
-      Prev Page
-    </router-link>
-    <router-link
-      :to="{ name: 'UsersList', query: { page: page + 1 } }"
-      rel="next"
-      v-if="hasNextPage"
+    <div>
+      <router-link
+        :to="{ name: 'UsersList', query: { page: page - 1 } }"
+        rel="prev"
+        v-if="page != 1"
       >
-      Next Page
-    </router-link>
+        Prev Page
+      </router-link>
+      <router-link
+        :to="{ name: 'UsersList', query: { page: page + 1 } }"
+        rel="next"
+        v-if="hasNextPage"
+        >
+        Next Page
+      </router-link>
+      </div>
   </div>
 </template>
 
 <script>
 import UserCard from '@/components/UserCard.vue';
 import NProgress from 'nprogress';
-import { mapState, mapGetters } from 'vuex';
+import { mapActions, mapState, mapGetters } from 'vuex';
 
 export default {
   name: 'UsersList',
@@ -52,6 +52,18 @@ export default {
     hasNextPage() {
       return this.checkNextPage(this.page);
     },
+  },
+  methods: {
+    ...mapActions([
+      'setAllUsers',
+      'clearAllUsers',
+    ]),
+  },
+  beforeMount() {
+    this.setAllUsers();
+  },
+  beforeUnmount() {
+    this.clearAllUsers();
   },
   create() {
     NProgress.start();

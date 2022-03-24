@@ -16,4 +16,7 @@ export default {
   getUser(id) {
     return apiClient.get(`/users/${id}`);
   },
+  postUser(newUser) {
+    return apiClient.post('/users', { ...newUser });
+  },
 };

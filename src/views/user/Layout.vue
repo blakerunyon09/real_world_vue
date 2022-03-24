@@ -9,7 +9,7 @@
       <router-link
         class="nav-btn"
         :to="{ name: 'Register' }"
-      >Register</router-link>
+      >Follow</router-link>
       |
       <router-link
         class="nav-btn"

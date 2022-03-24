@@ -45,9 +45,18 @@ export default createStore({
           context.commit(SET_ALL_USERS, response.data);
         });
     },
-    setUser(context, payload) {
-      const foundUser = this.state.users.find((user) => payload === user.id);
-      context.commit(SET_USER, foundUser);
+    async setUser(context, payload) {
+      const existingUser = this.state.users.find((user) => payload === user.id);
+      if (existingUser) context.commit(SET_USER, existingUser);
+      else {
+        JsonApiService.getUser(payload)
+          .then(({ data: foundUser }) => {
+            context.commit(SET_USER, foundUser);
+          });
+      }
+    },
+    clearAllUsers(context) {
+      context.commit(CLEAR_ALL_USERS);
     },
     clearUser(context) {
       context.commit(CLEAR_USER);

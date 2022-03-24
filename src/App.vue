@@ -5,6 +5,7 @@
     </div>
     <div id="nav">
       <router-link :to="{ name: 'UsersList' }" >Users</router-link> |
+      <router-link :to="{ name: 'RegisterUser' }" >Register</router-link> |
       <router-link :to="{ name: 'About' }" >About</router-link>
     </div>
     <router-view/>
@@ -12,24 +13,12 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   computed: mapState({
     flashMessage: (state) => state.flashMessage,
   }),
-  methods: {
-    ...mapActions([
-      'setAllUsers',
-      'clearAllUsers',
-    ]),
-  },
-  beforeMount() {
-    this.setAllUsers();
-  },
-  beforeUnmount() {
-    this.clearAllUsers();
-  },
 };
 
 </script>
